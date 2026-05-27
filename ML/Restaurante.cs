@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace ML
 {
-    internal class Restaurante
+    public class Restaurante
     {
+        public int IdRestaurante {  get; set; }
+        public string Nombre { get; set; }
+        public byte[] Logo { get; set; }
+        public int Capacidad { get; set; }
     }
 }
