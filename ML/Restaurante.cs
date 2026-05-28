@@ -12,5 +12,7 @@ namespace ML
         public string Nombre { get; set; }
         public byte[] Logo { get; set; }
         public int Capacidad { get; set; }
+        public List<object> Restaurantes { get; set; }
+
     }
 }

@@ -1,0 +1,73 @@
+﻿@model ML.Restaurante
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Formulario de Restaurante</h2>
+
+@using (Html.BeginForm("Form", "Restaurante", FormMethod.Post, new { @class = "container", @enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(restaurante => restaurante.IdRestaurante)
+    @Html.HiddenFor(restaurante => restaurante.Logo)
+
+    <div class="container mt-4">
+        <div class="card-header bg-primary text-white"></div>
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(restaurante => restaurante.Nombre)
+                        @Html.TextBoxFor(restaurante => restaurante.Nombre, new { @class = "form-control required" })
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(restaurante => restaurante.Capacidad)
+                        @Html.TextBoxFor(restaurante => restaurante.Capacidad, new { @class = "form-control required" })
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input type="file" onchange="ValidarImagen(this)" id="inputRestauranteLogo" name="RestauranteLogo" />
+                        @if (Model.Logo == null)
+                        {
+                            <img id="imgRestaurante" src="~/Content/Image/usuarioImage.png" width="200" height="200" />
+                        }
+                        else
+                        {
+                            <img id="imgResturante" src="data:image/*;base64, @Convert.ToBase64String(Model.Logo)" width="200" height="200">
+                        }
+                    </div>
+                </div>
+                <script src="~/Scripts/jquery-3.7.0.js"></script>
+                <script>
+                    function ValidarImagen(input) {
+                        let nombre = input.files[0].name;
+
+                        let extension = nombre.split('.');
+                        if (extension[1] == 'jpg' || extension[1] == 'png' || extension[1] == 'jpeg') {
+                            var file = input.files[0];
+                            var reader = new FileReader();
+
+                            reader.onloadend = function () {
+                                $("#imgRestaurante").attr("src", reader.result);
+                            }
+                            reader.readAsDataURL(file);
+                        } else {
+                            alert("No es una imagen, inserta una imagen.");
+                            $('#inputRestauranteLogo').val('');
+                            $('#imgRestaurante').attr('');
+
+                        }
+                    }
+                </script>
+            </div>
+        </div>
+        <button type="submit">Guardar</button>
+    </div>
+}
+

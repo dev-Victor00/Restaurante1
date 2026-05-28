@@ -8,11 +8,61 @@ using System.Threading.Tasks;
 
 namespace BL
 {
-    internal class Restaurante
+    public class Restaurante
     {
-        public ML.Result Add (ML.Restaurante restaurante)
+        public static ML.Result Delete(int idRestaurante)
         {
-            ML.Result result = new ML.Result ();
+            ML.Result result = new ML.Result();
+
+            try
+            {
+                using (DL.CalifadeLeonEntities context = new DL.CalifadeLeonEntities())
+                {
+
+                    try
+                    {
+                        ML.Restaurante restaurante = new ML.Restaurante();
+
+                        restaurante.IdRestaurante = idRestaurante;
+
+                        var query = context.DeleteRestaurant(restaurante.IdRestaurante);
+
+                        if (query > 0)
+                        {
+                            result.Correct = true;
+                            result.Messages = "Restaurante ELiminado Correctamente";
+                        }
+                        else
+                        {
+                            result.Correct = false;
+                            result.Messages = "No se encontro el Restaurante a Eliminar";
+                        }
+                    }
+                    catch (SqlException sqlEx)
+                    {
+                        result.Correct = false;
+                        result.Messages = "Error en SQL al ejecutar RestauranteDelete";
+                        result.Ex = sqlEx;
+                    }
+                    catch (InvalidOperationException invEx)
+                    {
+                        result.Correct = false;
+                        result.Messages = "Error al abrir la conexion";
+                        result.Ex = invEx;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.Messages = "Error General";
+                result.Ex = ex;
+            }
+            return result;
+        }
+        public static ML.Result Add(ML.Restaurante restaurante)
+        {
+            ML.Result result = new ML.Result();
 
             try
             {
@@ -28,14 +78,16 @@ namespace BL
                             result.Messages = "Restaurante agregado correctamente";
                         }
                     }
-                    catch (SqlException sqlEx) {
+                    catch (SqlException sqlEx)
+                    {
                         result.Correct = false;
                         result.Messages = sqlEx.Message;
                         result.Ex = sqlEx;
                     }
                 }
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 result.Correct = false;
                 result.Messages = "Ingresaste algo mal o no se pudo insertar el restaurante";
                 result.Ex = ex;
@@ -44,10 +96,10 @@ namespace BL
             return result;
         }
 
-        public ML.Result GetAll()
+        public static ML.Result GetAll()
         {
             ML.Result result = new ML.Result();
-
+            result.Objects = new List<object>();
             try
             {
                 using (DL.CalifadeLeonEntities context = new DL.CalifadeLeonEntities())
@@ -58,7 +110,7 @@ namespace BL
 
                         if (query.Count > 0)
                         {
-                            foreach(var item in query)
+                            foreach (var item in query)
                             {
                                 ML.Restaurante restaurante = new ML.Restaurante();
 
@@ -66,7 +118,7 @@ namespace BL
                                 restaurante.Nombre = item.Nombre;
                                 restaurante.Logo = item.Logo;
                                 restaurante.Capacidad = item.Capacidad ?? 0;
-                                
+
                                 result.Objects.Add(restaurante);
                                 result.Correct = true;
                             }
@@ -95,7 +147,7 @@ namespace BL
             return result;
         }
 
-        public ML.Result Update(ML.Restaurante restaurante)
+        public static ML.Result Update(ML.Restaurante restaurante)
         {
             ML.Result result = new ML.Result();
 
@@ -125,6 +177,55 @@ namespace BL
             {
                 result.Correct = false;
                 result.Messages = "Ingresaste algo mal o no se pudo insertar el restaurante";
+                result.Ex = ex;
+            }
+
+            return result;
+        }
+
+        public static ML.Result GetById(int idRestaurante)
+        {
+            ML.Result result = new ML.Result();
+            try
+            {
+                using (DL.CalifadeLeonEntities context = new DL.CalifadeLeonEntities())
+                {
+                    try
+                    {
+                        var query = context.GetByIdRestaurante(idRestaurante).SingleOrDefault();
+
+                        if (query != null )
+                        {
+                            
+                                ML.Restaurante restaurante = new ML.Restaurante();
+
+                                restaurante.IdRestaurante = query.idRestaurante;
+                                restaurante.Nombre = query.Nombre;
+                                restaurante.Logo = query.Logo;
+                                restaurante.Capacidad = query.capacidad ?? 0;
+
+                                result.Object = restaurante;
+                                result.Correct = true;
+                            
+                        }
+                        else
+                        {
+                            result.Correct = false;
+                            result.Messages = "Error al mapear los datos";
+                        }
+                    }
+                    catch (SqlException sqlEx)
+                    {
+                        result.Correct = false;
+                        result.Messages = sqlEx.Message;
+                        result.Ex = sqlEx;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.Messages = "Hubo un error de conexion en la base de datos";
                 result.Ex = ex;
             }
 

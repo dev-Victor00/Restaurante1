@@ -1,0 +1,67 @@
+﻿@model ML.Restaurante
+
+
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Lista de Restaurantes</h2>
+
+@Html.ActionLink("Agregar", "Form", "Restaurante", new { @class = "btn btn-sm btn-success" })
+
+
+<div class="container">
+    <div class="table-responsive">
+        <table class="table table-striped table-dark">
+            <thead>
+                <tr>
+                    <th>Id Restaurante</th>
+                    <th>Nombre Restaurante</th>
+                    <th>Capacidad</th>
+                    <th>Logo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (ML.Restaurante restaurante in Model.Restaurantes)
+                {
+                    <tr>
+                        <td>@restaurante.IdRestaurante </td>
+                        <td>@restaurante.Nombre</td>
+                        <td>@restaurante.Capacidad</td>
+                        <td>
+                            @if (restaurante.Logo != null)
+                            {
+                                <img src="data:image/*;base64, @Convert.ToBase64String(restaurante.Logo)" width="60" height="60">
+                            }
+                            else
+                            {
+                                <img src="~/Content/Image/Image.png" width="60" height="60" />
+
+                            }
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Form", "Restaurante", new {idRestaurante = restaurante.IdRestaurante})">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+
+                            @using (Html.BeginForm("Delete", "Restaurante", FormMethod.Post))
+                            {
+                                @Html.Hidden("idRestaurante", restaurante.IdRestaurante)
+
+                                <button type="submit"
+                                        class="btn btn-danger btn-sm"
+                                        onclick="return confirm('¿Seguro que deseas eliminar este usuario?');">
+                                    <i class="bi bi-pencil-square"></i>
+
+                                </button>
+                            }
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

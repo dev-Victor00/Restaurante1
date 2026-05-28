@@ -1,6 +1,6 @@
 <Solution>
-  <Project Path="BL/BL.csproj" />
-  <Project Path="DL/DL.csproj" />
-  <Project Path="ML/ML.csproj" />
-  <Project Path="PL/PL.csproj" />
+  <Project Path="BL/BL.csproj" Id="8d225da2-2c54-4083-82c9-0d7cef7260b0" />
+  <Project Path="DL/DL.csproj" Id="0ebb209d-5844-4650-8c7f-458ba2a910ea" />
+  <Project Path="ML/ML.csproj" Id="56830554-11cb-43d2-8ed6-17324c156eff" />
+  <Project Path="PL/PL.csproj" Id="0e7ed1e6-9f0f-4710-8d97-cba06a5e8735" />
 </Solution>
