@@ -186,7 +186,6 @@ namespace BL
         public static ML.Result GetById(int idRestaurante)
         {
             ML.Result result = new ML.Result();
-            result.Objects = new List<object>();
             try
             {
                 using (DL.CalifadeLeonEntities context = new DL.CalifadeLeonEntities())
@@ -205,7 +204,7 @@ namespace BL
                                 restaurante.Logo = query.Logo;
                                 restaurante.Capacidad = query.capacidad ?? 0;
 
-                                result.Objects.Add(restaurante);
+                                result.Object = restaurante;
                                 result.Correct = true;
                             
                         }

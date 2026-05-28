@@ -30,7 +30,17 @@
                         <td>@restaurante.IdRestaurante </td>
                         <td>@restaurante.Nombre</td>
                         <td>@restaurante.Capacidad</td>
-                        <td>@restaurante.Logo </td>
+                        <td>
+                            @if (restaurante.Logo != null)
+                            {
+                                <img src="data:image/*;base64, @Convert.ToBase64String(restaurante.Logo)" width="60" height="60">
+                            }
+                            else
+                            {
+                                <img src="~/Content/Image/Image.png" width="60" height="60" />
+
+                            }
+                        </td>
                         <td>
                             <a href="@Url.Action("Form", "Restaurante", new {idRestaurante = restaurante.IdRestaurante})">
                                 <i class="bi bi-pencil-square"></i>
